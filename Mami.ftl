@@ -33,14 +33,54 @@
 <body>
     <div class="container">
         <h1>${titulo}</h1>
-        <div class="gallery">
+        <p>Toca una foto para verla en grande</p>
+        <div class="gallery" id="miGaleria">
             <#list fotosIds as id>
-                <#-- Corregido: Cargando desde lh3 con ID de Drive -->
-                <img src="https://lh3.googleusercontent.com/d/${id}" alt="Recuerdo">
+                <img src="https://lh3.googleusercontent.com/u/0/d/14MmR8mFXVwTrfhJdFqSgeGB6wlwqHrV745{id}" 
+                     alt="Recuerdo" 
+                     onclick="abrirVisorDinamico(${id?index})">
             </#list>
         </div>
         <button class="btn-felicitar" onclick="celebrar()">¡Felicidades! 🎉</button>
     </div>
 
-    </body>
+    <div id="miVisor" class="viewer">
+        <span class="close-btn" onclick="cerrarVisor()">×</span>
+        <span class="nav-btn prev" onclick="cambiarFoto(-1)">❮</span>
+        <img id="fotoGrande" class="viewer-img">
+        <span class="nav-btn next" onclick="cambiarFoto(1)">❯</span>
+    </div>
+
+    <script>
+        let indiceActual = 0;
+        const visor = document.getElementById('miVisor');
+        const fotoGrande = document.getElementById('fotoGrande');
+        
+        function getFotos() { return document.querySelectorAll('.gallery img'); }
+
+        function abrirVisorDinamico(index) {
+            const fotos = getFotos();
+            indiceActual = index;
+            visor.style.display = "flex";
+            fotoGrande.src = fotos[indiceActual].src;
+            document.body.style.overflow = "hidden";
+        }
+
+        function cerrarVisor() {
+            visor.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        function cambiarFoto(dir) {
+            const fotos = getFotos();
+            indiceActual = (indiceActual + dir + fotos.length) % fotos.length;
+            fotoGrande.src = fotos[indiceActual].src;
+        }
+
+        function celebrar() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            setTimeout(() => { alert('¡Te quiero mucho Mami! ❤️'); }, 500);
+        }
+    </script>
+</body>
 </html>

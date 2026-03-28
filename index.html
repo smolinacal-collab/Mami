@@ -58,10 +58,10 @@
 </div>
 
 <div id="miVisor" class="viewer">
-    <span class="close-btn" onclick="cerrarVisor()">&times;</span>
-    <span class="nav-btn prev" onclick="cambiarFoto(-1)">&#10094;</span>
+    <span class="close-btn" onclick="cerrarVisor()">×</span>
+    <span class="nav-btn prev" onclick="cambiarFoto(-1)">❮</span>
     <img id="fotoGrande" class="viewer-img">
-    <span class="nav-btn next" onclick="cambiarFoto(1)">&#10095;</span>
+    <span class="nav-btn next" onclick="cambiarFoto(1)">❯</span>
 </div>
 
 <div class="musica-invisible">
@@ -74,7 +74,7 @@
     const visor = document.getElementById('miVisor');
     const fotoGrande = document.getElementById('fotoGrande');
 
-    // Al hacer clic en cualquier foto de la galería
+    // Inicializar clics en las miniaturas
     listaFotos.forEach((img, index) => {
         img.onclick = () => {
             indiceActual = index;
@@ -85,31 +85,28 @@
     function abrirVisor() {
         visor.style.display = "flex";
         fotoGrande.src = listaFotos[indiceActual].src;
+        document.body.style.overflow = "hidden"; // Bloquea scroll
     }
 
     function cerrarVisor() {
         visor.style.display = "none";
+        document.body.style.overflow = "auto"; // Libera scroll
     }
 
     function cambiarFoto(dir) {
-        indiceActual += dir;
-        if (indiceActual >= listaFotos.length) indiceActual = 0;
-        if (indiceActual < 0) indiceActual = listaFotos.length - 1;
+        indiceActual = (indiceActual + dir + listaFotos.length) % listaFotos.length;
         fotoGrande.src = listaFotos[indiceActual].src;
     }
 
-    // Cerrar si se toca fuera de la foto
     visor.onclick = (e) => { if(e.target == visor) cerrarVisor(); };
 
-    // Música
     window.addEventListener('click', () => {
         const iframe = document.getElementById('reproductor');
         if (!iframe.src.includes('autoplay=1')) iframe.src += "&autoplay=1";
     }, { once: true });
 
-    // Confeti
     function celebrar() {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         setTimeout(() => { alert('¡Te quiero mucho Mami! 🎉🎂🌹'); }, 500);
     }
 </script>
