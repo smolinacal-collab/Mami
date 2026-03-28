@@ -11,9 +11,9 @@
 
 <div class="container">
     <h1>¡Feliz Cumpleaños Mami! 🎂</h1>
-    <p>Espero que tengas un día increíble lleno de sorpresas.</p>
+    <p>Toca una foto para verla en grande</p>
 
-    <div class="gallery">
+    <div class="gallery" id="miGaleria">
         <img src="https://lh3.googleusercontent.com/d/1Rw-BwhuLj0qT6B-g5-CQTq-nWmqmIas0" alt="Foto">
         <img src="https://lh3.googleusercontent.com/d/16ri2I8EyU6yzqrY4ZCCKxJDSGtMEtpqY" alt="Foto">
         <img src="https://lh3.googleusercontent.com/d/1yyNQaODcGUgoTc9UBkZ4_BbSKnJFgyg_" alt="Foto">
@@ -54,49 +54,63 @@
         <img src="https://lh3.googleusercontent.com/d/1lqTEjpObm6zJZlrLIYOOFRkXDagLAt4f" alt="Foto">
     </div>
 
-    <div class="musica-invisible">
-        <iframe id="reproductor" width="1" height="1"
-                src="https://www.youtube.com/embed/ixZO0j_LCj4?enablejsapi=1"
-                frameborder="0" allow="autoplay; encrypted-media"></iframe>
-    </div>
-
     <button class="btn-felicitar" onclick="celebrar()">¡Felicidades a Mami! 🎉</button>
 </div>
 
+<div id="miVisor" class="viewer">
+    <span class="close-btn" onclick="cerrarVisor()">&times;</span>
+    <span class="nav-btn prev" onclick="cambiarFoto(-1)">&#10094;</span>
+    <img id="fotoGrande" class="viewer-img">
+    <span class="nav-btn next" onclick="cambiarFoto(1)">&#10095;</span>
+</div>
+
+<div class="musica-invisible">
+    <iframe id="reproductor" width="1" height="1" src="https://www.youtube.com/embed/ixZO0j_LCj4?enablejsapi=1" frameborder="0"></iframe>
+</div>
+
 <script>
+    let indiceActual = 0;
+    const listaFotos = document.querySelectorAll('.gallery img');
+    const visor = document.getElementById('miVisor');
+    const fotoGrande = document.getElementById('fotoGrande');
+
+    // Al hacer clic en cualquier foto de la galería
+    listaFotos.forEach((img, index) => {
+        img.onclick = () => {
+            indiceActual = index;
+            abrirVisor();
+        };
+    });
+
+    function abrirVisor() {
+        visor.style.display = "flex";
+        fotoGrande.src = listaFotos[indiceActual].src;
+    }
+
+    function cerrarVisor() {
+        visor.style.display = "none";
+    }
+
+    function cambiarFoto(dir) {
+        indiceActual += dir;
+        if (indiceActual >= listaFotos.length) indiceActual = 0;
+        if (indiceActual < 0) indiceActual = listaFotos.length - 1;
+        fotoGrande.src = listaFotos[indiceActual].src;
+    }
+
+    // Cerrar si se toca fuera de la foto
+    visor.onclick = (e) => { if(e.target == visor) cerrarVisor(); };
+
+    // Música
     window.addEventListener('click', () => {
         const iframe = document.getElementById('reproductor');
-        if (!iframe.src.includes('autoplay=1')) {
-            iframe.src += "&autoplay=1";
-        }
+        if (!iframe.src.includes('autoplay=1')) iframe.src += "&autoplay=1";
     }, { once: true });
 
+    // Confeti
     function celebrar() {
-        var duration = 4 * 1000;
-        var end = Date.now() + duration;
-
-        (function frame() {
-            confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#d81b60', '#ff85a1', '#ffffff']
-            });
-            confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#d81b60', '#ff85a1', '#ffffff']
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        }());
-
-        setTimeout(() => { alert('¡Te quiero mucho Mami! 🎉🎂🌹'); }, 1000);
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        setTimeout(() => { alert('¡Te quiero mucho Mami! 🎉🎂🌹'); }, 500);
     }
 </script>
 </body>
