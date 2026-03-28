@@ -19,15 +19,16 @@
     "1ZjxnRzrd8J-1GWzghjDJxhImhWfKN9ay", "1UQPpwurkKJpkutvpPCbbmLp5nqtjuAIx",
     "1Fh0j2gq5-C1whGBF-qBo1KExCCKAkX1a", "17rwphhUI8HO5rbrTj-_XgL36jE3ElwvM",
     "1dfJS_quKuvsaL1zjA6jzbdHXNFy-us6J", "1Ze8pYSLwIRS5vo4XHmRHB0mYAgNTiBWQ",
-    "1XgXy597zpNO332iY4C5XkpcB34ho7WKb", "1TRPYMDzBC8xbmcv9kFxjfLSAm02S0Trw",
-    "1Hm5VYSjsLSX2qTni-TjxkPLoVP57Uj3a", "1GsubvFGT_sGhIzW0ghFv4898hyt6Vimy",
-    "1lqTEjpObm6zJZlrLIYOOFRkXDagLAt4f"
+    "1XgXy597zpNO332iY4C5XkpcB34ho7WKb", "1XgXy597zpNO332iY4C5XkpcB34ho7WKb",
+    "1TRPYMDzBC8xbmcv9kFxjfLSAm02S0Trw", "1Hm5VYSjsLSX2qTni-TjxkPLoVP57Uj3a",
+    "1GsubvFGT_sGhIzW0ghFv4898hyt6Vimy", "1lqTEjpObm6zJZlrLIYOOFRkXDagLAt4f"
 ]>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${titulo}</title>
     <link rel="stylesheet" href="Mami.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -41,7 +42,7 @@
         <div class="gallery">
             <#if fotosIds??>
                 <#list fotosIds as id>
-                    <img src="https://lh3.googleusercontent.com/u/0/d/14MmR8mFXVwTrfhJdFqSgeGB6wlwqHrV74{id}" 
+                    <img src="https://lh3.googleusercontent.com/d/${id}" 
                          style="animation-delay: ${id?index * 0.15}s" 
                          loading="lazy"
                          alt="Foto ${id?index + 1}">
