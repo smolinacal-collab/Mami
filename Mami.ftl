@@ -34,11 +34,9 @@
     <div class="container">
         <h1>${titulo}</h1>
         <p>Toca una foto para verla en grande</p>
-        <div class="gallery" id="miGaleria">
+        <div class="gallery">
             <#list fotosIds as id>
-                <img src="https://lh3.googleusercontent.com/u/0/d/14MmR8mFXVwTrfhJdFqSgeGB6wlwqHrV745{id}" 
-                     alt="Recuerdo" 
-                     onclick="abrirVisorDinamico(${id?index})">
+                <img src="http://googleusercontent.com/profile/picture/${id}" alt="Recuerdo">
             </#list>
         </div>
         <button class="btn-felicitar" onclick="celebrar()">¡Felicidades! 🎉</button>
@@ -53,14 +51,22 @@
 
     <script>
         let indiceActual = 0;
+        // Obtenemos la lista después de que FTL las genere
+        const getLista = () => document.querySelectorAll('.gallery img');
         const visor = document.getElementById('miVisor');
         const fotoGrande = document.getElementById('fotoGrande');
-        
-        function getFotos() { return document.querySelectorAll('.gallery img'); }
 
-        function abrirVisorDinamico(index) {
-            const fotos = getFotos();
-            indiceActual = index;
+        // Delegación de eventos para las fotos generadas
+        document.querySelector('.gallery').addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG') {
+                const fotos = getLista();
+                indiceActual = Array.from(fotos).indexOf(e.target);
+                abrirVisor();
+            }
+        });
+
+        function abrirVisor() {
+            const fotos = getLista();
             visor.style.display = "flex";
             fotoGrande.src = fotos[indiceActual].src;
             document.body.style.overflow = "hidden";
@@ -72,10 +78,12 @@
         }
 
         function cambiarFoto(dir) {
-            const fotos = getFotos();
+            const fotos = getLista();
             indiceActual = (indiceActual + dir + fotos.length) % fotos.length;
             fotoGrande.src = fotos[indiceActual].src;
         }
+
+        visor.onclick = (e) => { if(e.target == visor) cerrarVisor(); };
 
         function celebrar() {
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });

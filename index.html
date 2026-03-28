@@ -74,7 +74,6 @@
     const visor = document.getElementById('miVisor');
     const fotoGrande = document.getElementById('fotoGrande');
 
-    // Inicializar clics en las miniaturas
     listaFotos.forEach((img, index) => {
         img.onclick = () => {
             indiceActual = index;
@@ -85,12 +84,12 @@
     function abrirVisor() {
         visor.style.display = "flex";
         fotoGrande.src = listaFotos[indiceActual].src;
-        document.body.style.overflow = "hidden"; // Bloquea scroll
+        document.body.style.overflow = "hidden";
     }
 
     function cerrarVisor() {
         visor.style.display = "none";
-        document.body.style.overflow = "auto"; // Libera scroll
+        document.body.style.overflow = "auto";
     }
 
     function cambiarFoto(dir) {
